@@ -1,134 +1,80 @@
 <script lang="ts" module>
-	import ArchiveX from "lucide-svelte/icons/archive-x";
-	import File from "lucide-svelte/icons/file";
-	import Inbox from "lucide-svelte/icons/inbox";
-	import Send from "lucide-svelte/icons/send";
-	import Trash2 from "lucide-svelte/icons/trash-2";
+	import ArchiveX from 'lucide-svelte/icons/archive-x';
+	import File from 'lucide-svelte/icons/file';
+	import Inbox from 'lucide-svelte/icons/inbox';
+	import Send from 'lucide-svelte/icons/send';
+	import Trash2 from 'lucide-svelte/icons/trash-2';
 
 	// This is sample data
 	const data = {
 		user: {
-			name: "shadcn",
-			email: "m@example.com",
-			avatar: "/avatars/shadcn.jpg",
+			name: 'shadcn',
+			email: 'm@example.com',
+			avatar: '/avatars/shadcn.jpg'
 		},
 		navMain: [
 			{
-				title: "Inbox",
-				url: "#",
+				title: 'Inbox',
+				url: '#',
 				icon: Inbox,
-				isActive: true,
+				isActive: true
 			},
 			{
-				title: "Drafts",
-				url: "#",
+				title: 'Drafts',
+				url: '#',
 				icon: File,
-				isActive: false,
+				isActive: false
 			},
 			{
-				title: "Sent",
-				url: "#",
+				title: 'Sent',
+				url: '#',
 				icon: Send,
-				isActive: false,
+				isActive: false
 			},
 			{
-				title: "Junk",
-				url: "#",
+				title: 'Junk',
+				url: '#',
 				icon: ArchiveX,
-				isActive: false,
+				isActive: false
 			},
 			{
-				title: "Trash",
-				url: "#",
+				title: 'Trash',
+				url: '#',
 				icon: Trash2,
-				isActive: false,
-			},
+				isActive: false
+			}
 		],
 		mails: [
 			{
-				name: "William Smith",
-				email: "williamsmith@example.com",
-				subject: "Meeting Tomorrow",
-				date: "09:34 AM",
-				teaser: "Hi team, just a reminder about our meeting tomorrow at 10 AM.\nPlease come prepared with your project updates.",
-			},
-			{
-				name: "Alice Smith",
-				email: "alicesmith@example.com",
-				subject: "Re: Project Update",
-				date: "Yesterday",
-				teaser: "Thanks for the update. The progress looks great so far.\nLet's schedule a call to discuss the next steps.",
-			},
-			{
-				name: "Bob Johnson",
-				email: "bobjohnson@example.com",
-				subject: "Weekend Plans",
-				date: "2 days ago",
-				teaser: "Hey everyone! I'm thinking of organizing a team outing this weekend.\nWould you be interested in a hiking trip or a beach day?",
-			},
-			{
-				name: "Emily Davis",
-				email: "emilydavis@example.com",
-				subject: "Re: Question about Budget",
-				date: "2 days ago",
-				teaser: "I've reviewed the budget numbers you sent over.\nCan we set up a quick call to discuss some potential adjustments?",
-			},
-			{
-				name: "Michael Wilson",
-				email: "michaelwilson@example.com",
-				subject: "Important Announcement",
-				date: "1 week ago",
-				teaser: "Please join us for an all-hands meeting this Friday at 3 PM.\nWe have some exciting news to share about the company's future.",
-			},
-			{
-				name: "Sarah Brown",
-				email: "sarahbrown@example.com",
-				subject: "Re: Feedback on Proposal",
-				date: "1 week ago",
-				teaser: "Thank you for sending over the proposal. I've reviewed it and have some thoughts.\nCould we schedule a meeting to discuss my feedback in detail?",
-			},
-			{
-				name: "David Lee",
-				email: "davidlee@example.com",
-				subject: "New Project Idea",
-				date: "1 week ago",
-				teaser: "I've been brainstorming and came up with an interesting project concept.\nDo you have time this week to discuss its potential impact and feasibility?",
-			},
-			{
-				name: "Olivia Wilson",
-				email: "oliviawilson@example.com",
-				subject: "Vacation Plans",
-				date: "1 week ago",
-				teaser: "Just a heads up that I'll be taking a two-week vacation next month.\nI'll make sure all my projects are up to date before I leave.",
-			},
-			{
-				name: "James Martin",
-				email: "jamesmartin@example.com",
-				subject: "Re: Conference Registration",
-				date: "1 week ago",
-				teaser: "I've completed the registration for the upcoming tech conference.\nLet me know if you need any additional information from my end.",
-			},
-			{
-				name: "Sophia White",
-				email: "sophiawhite@example.com",
-				subject: "Team Dinner",
-				date: "1 week ago",
-				teaser: "To celebrate our recent project success, I'd like to organize a team dinner.\nAre you available next Friday evening? Please let me know your preferences.",
-			},
-		],
+				name: 'William Smith',
+				email: 'williamsmith@example.com',
+				subject: 'Meeting Tomorrow',
+				date: '09:34 AM',
+				teaser:
+					'Hi team, just a reminder about our meeting tomorrow at 10 AM.\nPlease come prepared with your project updates.'
+			}
+		]
 	};
 </script>
 
 <script lang="ts">
-	import NavUser from "$lib/client/components/nav-user.svelte";
-	import { Label } from "$lib/client/components/ui/label/index";
-	import * as Sidebar from "$lib/client/components/ui/sidebar/index";
-	import { useSidebar } from "$lib/client/components/ui/sidebar/index";
-	import { Switch } from "$lib/client/components/ui/switch/index";
-	import Command from "lucide-svelte/icons/command";
-	import type { ComponentProps } from "svelte";
+	import NavUser from '$lib/client/components/sidebar/nav-user.svelte';
+	import { Label } from '$lib/client/components/ui/label/index';
+	import * as Sidebar from '$lib/client/components/ui/sidebar/index';
+	import { useSidebar } from '$lib/client/components/ui/sidebar/index';
+	import { Switch } from '$lib/client/components/ui/switch/index';
+	import Command from 'lucide-svelte/icons/command';
+	import type { ComponentProps } from 'svelte';
+	// import type { Ticket } from '$lib/server/db/schema';
+	import { formatDate } from '$lib/utils';
 
-	let { ref = $bindable(null), ...restProps }: ComponentProps<typeof Sidebar.Root> = $props();
+	let {
+		ref = $bindable(null),
+		tickets,
+		...restProps
+	}: ComponentProps<typeof Sidebar.Root> & {
+		tickets: any[];
+	} = $props();
 
 	let activeItem = $state(data.navMain[0]);
 	let mails = $state(data.mails);
@@ -144,7 +90,10 @@
 	<!-- This is the first sidebar -->
 	<!-- We disable collapsible and adjust width to icon. -->
 	<!-- This will make the sidebar appear as icons. -->
-	<Sidebar.Root collapsible="none" class="!w-[calc(var(--sidebar-width-icon)_+_1px)] border-r">
+	<Sidebar.Root
+		collapsible="none"
+		class="!w-[calc(var(--sidebar-width-icon)_+_1px)] border-r"
+	>
 		<Sidebar.Header>
 			<Sidebar.Menu>
 				<Sidebar.MenuItem>
@@ -174,7 +123,7 @@
 							<Sidebar.MenuItem>
 								<Sidebar.MenuButton
 									tooltipContentProps={{
-										hidden: false,
+										hidden: false
 									}}
 									onclick={() => {
 										activeItem = item;
@@ -223,18 +172,22 @@
 		<Sidebar.Content>
 			<Sidebar.Group class="px-0">
 				<Sidebar.GroupContent>
-					{#each mails as mail (mail.email)}
+					{#each tickets as ticket}
 						<a
-							href="##"
+							href="/tickets/{ticket.id}"
 							class="hover:bg-sidebar-accent hover:text-sidebar-accent-foreground flex flex-col items-start gap-2 whitespace-nowrap border-b p-4 text-sm leading-tight last:border-b-0"
 						>
 							<div class="flex w-full items-center gap-2">
-								<span>{mail.name}</span>{" "}
-								<span class="ml-auto text-xs">{mail.date}</span>
+								<span>{ticket.subject}</span>{' '}
+								<span class="ml-auto text-xs"
+									>{formatDate(ticket.created_at)}</span
+								>
 							</div>
-							<span class="font-medium">{mail.subject}</span>
-							<span class="line-clamp-2 w-[260px] whitespace-break-spaces text-xs">
-								{mail.teaser}
+							<span class="font-medium">{ticket.subject}</span>
+							<span
+								class="line-clamp-2 w-[260px] whitespace-break-spaces text-xs"
+							>
+								{ticket.lastMessage}
 							</span>
 						</a>
 					{/each}

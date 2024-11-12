@@ -10,8 +10,10 @@
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"db:start": "docker compose up",
 		"db:push": "drizzle-kit push",
+		"db:generate": "drizzle-kit generate",
 		"db:migrate": "drizzle-kit migrate",
 		"db:studio": "drizzle-kit studio",
+		"db:drop": "drizzle-kit drop",
 		"lint": "eslint . && prettier --check .",
 		"format": "prettier --write ."
 	},
@@ -50,7 +52,9 @@
 		"@trpc/client": "^10.45.2",
 		"@trpc/server": "^10.45.2",
 		"drizzle-orm": "^0.36.1",
+		"drizzle-zod": "^0.5.1",
 		"postgres": "^3.4.5",
-		"trpc-sveltekit": "^3.6.2"
+		"trpc-sveltekit": "^3.6.2",
+		"zod": "^3.23.8"
 	}
 }
