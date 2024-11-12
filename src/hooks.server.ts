@@ -1,5 +1,9 @@
 import type { Handle } from '@sveltejs/kit';
+import { createContext } from '$lib/trpc/context';
+import { router } from '$lib/trpc/router';
+import { createTRPCHandle } from 'trpc-sveltekit';
 import * as auth from '$lib/server/auth.js';
+import { sequence } from '@sveltejs/kit/hooks';
 
 const handleAuth: Handle = async ({ event, resolve }) => {
 	const sessionToken = event.cookies.get(auth.sessionCookieName);
@@ -22,4 +26,4 @@ const handleAuth: Handle = async ({ event, resolve }) => {
 	return resolve(event);
 };
 
-export const handle: Handle = handleAuth;
+export const handle: Handle = sequence(createTRPCHandle({ router, createContext }), handleAuth);
