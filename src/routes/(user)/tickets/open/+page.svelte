@@ -9,25 +9,30 @@
 	import * as Accordion from '$lib/client/components/ui/accordion/index.js';
 	import { trpc } from '$lib/trpc/client.js';
 	import { page } from '$app/stores';
-	// import { typeSubject } from '$lib/server/db/schema';
+	import { typeSubject } from '$lib/utils';
 	let { data } = $props();
 	let tags = data.tags;
 
 	let form = {
-		subject: '',
 		tags: [],
 		lastMessage: '',
 		description: ''
 	};
 
+	let selectedSubject = $state('');
+
 	async function handleSubmit() {
 		const resp = await trpc($page).ticket.create.mutate({
-			subject: form.subject,
+			subject: selectedSubject,
 			tags: form.tags,
-			lastMessage: form.lastMessage,
+			lastMessage: form.description,
 			description: form.description
 		});
 	}
+
+	const triggerContent = $derived(
+		typeSubject.find((f) => f === selectedSubject) ?? 'Selecione'
+	);
 </script>
 
 <main class="container mx-auto py-8">
@@ -56,24 +61,16 @@
 				<div class="space-y-6">
 					<div class="grid w-full items-center gap-1.5">
 						<Label for="picture">Selecione seu problema</Label>
-						<Select.Root type="single">
-							<Select.Trigger class="">-</Select.Trigger>
+						<Select.Root type="single" bind:value={selectedSubject}>
+							<Select.Trigger>{triggerContent}</Select.Trigger>
 							<Select.Content>
-								<!-- {#each typeSubject as subject}
-									<Select.Item value="">{subject}</Select.Item>
-								{/each} -->
+								{#each typeSubject as subject}
+									<Select.Item value={subject} label={subject}
+										>{subject}</Select.Item
+									>
+								{/each}
 							</Select.Content>
 						</Select.Root>
-					</div>
-
-					<div class="grid w-full items-center gap-1.5">
-						<Label for="subject">Subject</Label>
-						<Input id="subject" type="text" bind:value={form.subject} />
-					</div>
-
-					<div class="grid w-full items-center gap-1.5">
-						<Label for="files">Files</Label>
-						<Input id="files" type="file" />
 					</div>
 
 					<div class="grid w-full gap-1.5">
@@ -86,6 +83,11 @@
 						<p class="text-muted-foreground text-sm">
 							Your message will be copied to the support team.
 						</p>
+					</div>
+
+					<div class="grid w-full items-center gap-1.5">
+						<Label for="files">Files</Label>
+						<Input id="files" type="file" />
 					</div>
 
 					<Button type="submit" class="w-full" onclick={handleSubmit}

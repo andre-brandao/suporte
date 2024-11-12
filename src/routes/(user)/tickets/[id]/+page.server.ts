@@ -5,7 +5,8 @@ import { ticketC } from '$lib/server/db/controller';
 export const load = (async ({ params }) => {
 	const ticketId = Number(params.id);
 
-	const info = ticketC.getById(ticketId);
+	const info = await ticketC.getById(ticketId);
+	console.log(info);
 	return {
 		info
 	};

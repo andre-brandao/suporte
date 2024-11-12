@@ -10,7 +10,7 @@ import type {
 } from './schema';
 
 import { db } from '.';
-import { eq } from 'drizzle-orm';
+import { eq, getTableColumns } from 'drizzle-orm';
 export const ticketC = {
 	create: (data: InsertTicket) => {
 		return db.insert(ticketT).values(data);
@@ -22,9 +22,31 @@ export const ticketC = {
 		return db.select().from(ticketT).where(eq(ticketT.userId, userId));
 	},
 	getById: (id: Ticket['id']) => {
-		return db.select().from(ticketT).where(eq(ticketT.id, id));
+		return db.query.ticketT.findFirst({
+			where: eq(ticketT.id, id),
+			with: {
+				messages: true,
+				created_by: true
+			}
+		});
 	},
 	getAll: () => db.select().from(ticketT),
+	getAllJoinUser: () => {
+		const { ...ticketFields } = getTableColumns(ticketT);
+		const {
+			created_at,
+			updated_at,
+			deleted_at,
+			age,
+			passwordHash,
+			id: userId,
+			...userFields
+		} = getTableColumns(userT);
+		return db
+			.select({ ...userFields, ...ticketFields })
+			.from(ticketT)
+			.leftJoin(userT, eq(ticketT.userId, userT.id));
+	},
 	getMessages: (ticketId: Ticket['id']) => {
 		return db
 			.select()

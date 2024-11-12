@@ -3,7 +3,7 @@
 	import * as Breadcrumb from '$lib/client/components/ui/breadcrumb/index.js';
 	import { Separator } from '$lib/client/components/ui/separator/index.js';
 	import * as Sidebar from '$lib/client/components/ui/sidebar/index.js';
-	// import type { Ticket } from '$lib/server/db/schema';
+	import type { Ticket } from '$lib/server/db/schema';
 	import type { Snippet } from 'svelte';
 
 	let {
@@ -11,7 +11,7 @@
 		tickets
 	}: {
 		children: Snippet;
-		tickets: any[];
+		tickets: Ticket[];
 	} = $props();
 </script>
 

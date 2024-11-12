@@ -65,7 +65,7 @@
 	import { Switch } from '$lib/client/components/ui/switch/index';
 	import Command from 'lucide-svelte/icons/command';
 	import type { ComponentProps } from 'svelte';
-	// import type { Ticket } from '$lib/server/db/schema';
+	import type { Ticket } from '$lib/server/db/schema';
 	import { formatDate } from '$lib/utils';
 
 	let {
@@ -73,7 +73,7 @@
 		tickets,
 		...restProps
 	}: ComponentProps<typeof Sidebar.Root> & {
-		tickets: any[];
+		tickets: Ticket[];
 	} = $props();
 
 	let activeItem = $state(data.navMain[0]);
@@ -178,7 +178,7 @@
 							class="hover:bg-sidebar-accent hover:text-sidebar-accent-foreground flex flex-col items-start gap-2 whitespace-nowrap border-b p-4 text-sm leading-tight last:border-b-0"
 						>
 							<div class="flex w-full items-center gap-2">
-								<span>{ticket.subject}</span>{' '}
+								<span>{ticket.userId}</span>{' '}
 								<span class="ml-auto text-xs"
 									>{formatDate(ticket.created_at)}</span
 								>
